@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./DishCard.css";
-import { Link } from "react-router-dom";
 
 const DishCard = props => (
             <div className="card" id={props.id}>

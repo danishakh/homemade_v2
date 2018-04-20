@@ -1,3 +1,19 @@
 .some-space {
 	padding-top: 2%;
 }
+
+.edit-profile-div, .dish-upload-div{
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 15px;
+	padding: 4%;
+}
+
+.row-x {
+	display: flex;
+	height: 100%;
+}
+
+.btn-add-dish {
+	float: right;
+}

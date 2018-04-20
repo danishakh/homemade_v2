@@ -1,7 +1,7 @@
 const path = require("path");
 const router = require("express").Router();
 const apiRoutes = require("./api");
-const authRoutes = require("./auth-routes.js");
+//const authRoutes = require("./auth-routes.js");
 
 // API Routes
 //router.use("/auth", authRoutes);

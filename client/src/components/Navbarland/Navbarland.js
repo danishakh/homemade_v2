@@ -3,7 +3,15 @@ import API from "../../utils/API";
 import "./Navbarland.css";
 //import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/lib/Badge";
-
+import Navbar from "react-bootstrap/lib/Navbar";
+import NavbarHeader from "react-bootstrap/lib/NavbarHeader";
+import NavbarBrand from "react-bootstrap/lib/NavbarBrand";
+import NavbarToggle from "react-bootstrap/lib/NavbarToggle";
+import NavbarCollapse from "react-bootstrap/lib/NavbarCollapse";
+//import NavbarForm from "react-bootstrap/lib/NavbarForm";
+import FormGroup from "react-bootstrap/lib/FormGroup";
+import FormControl from "react-bootstrap/lib/FormControl";
+import Button from "react-bootstrap/lib/Button";
 
 
 class Navbarland extends Component {
@@ -36,7 +44,7 @@ class Navbarland extends Component {
 			  	
 			  	<form className="form-inline my-2 my-lg-0">
 			      <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-			      <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			      <button className="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 			   	</form>
 			   	<a className="navbar-brand" href="/main">HomeMade</a>
 			  	<div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -58,6 +66,16 @@ class Navbarland extends Component {
 			      	</ul>  
 			  	</div>
 			</nav>
+
+			// <Navbar collapseOnSelect>
+			// 	<Navbar.Form pullLeft>
+			// 		<FormGroup>
+			// 			<FormControl type="text" placeholder="Search" />
+			// 		</FormGroup>{' '}
+			// 		<Button bsStyle="success" type="submit">Submit</Button>
+			// 	</Navbar.Form>
+			// </Navbar>	
+
 		)
 
 	}

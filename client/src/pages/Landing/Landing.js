@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./Landing.css";
 import "../../bootstrap-social.css";
+import Well from "react-bootstrap/lib/Well";
 
 
 class Landing extends Component {
@@ -17,6 +18,8 @@ class Landing extends Component {
 				
 				<div className="row">
 					<div className="landing-zone">
+						<Well bsSize="lg">im in a well</Well>
+
 						<div className="col-sm-6">
 							<div id="intro-card" className="card">
 								<div className="card-body text-center">
