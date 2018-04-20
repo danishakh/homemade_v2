@@ -13,13 +13,14 @@
   "dependencies": {
     "axios": "^0.18.0",
     "react": "^16.0.0",
+    "react-bootstrap": "*",
     "react-dom": "^16.0.0",
+    "react-fontawesome": "*",
     "react-materialize": "^2.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.14",
-    "react-bootstrap": "*",
-    "react-fontawesome": "*"
+    "react-spinners": "^0.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

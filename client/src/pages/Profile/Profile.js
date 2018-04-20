@@ -9,7 +9,8 @@ import "./Profile.css";
 class Profile extends Component {
 
 	state = {
-		loggedUser: {}
+		loggedUser: null,
+		isLoading: true
 	}
 
 	componentDidMount() {
@@ -19,17 +20,23 @@ class Profile extends Component {
 	loadCurrentUser = () => {
 		API.getCurrentUser()
 			.then(user => {
-				this.setState({loggedUser: user.data})
+				this.setState({loggedUser: user.data, isLoading: false})
+
 			})
 			.catch(err => console.log(err));
 	}
 
 	render() {
-		//const { classes } = props;
+
+		// if (!this.state.loggedUser) {
+		// 	return null;
+		// }
+		if (this.state.isLoading) {
+			//console.log('loading');
+			return "loading page";
+		}
 
 		return (
-
-
 
 			<div>
 				<Navbarland />
@@ -42,6 +49,13 @@ class Profile extends Component {
 				    	<Col xs={12} md={8} lg={6}>
 					    	<div >
 								<h1> {this.state.loggedUser.name} </h1>
+							</div>
+				    	</Col>
+				  	</Row>
+				  	<Row className="show-grid">
+				    	<Col xs={12} md={8} lg={6}>
+					    	<div >
+								<h4> Address:  {this.state.loggedUser.address.city} </h4>
 							</div>
 				    	</Col>
 				  	</Row>
