@@ -6,6 +6,21 @@ import ProfileCard from "../../components/ProfileCard";
 //import DishModal from "../../components/DishModal";
 import Modal from "react-modal";
 
+const customModalStyle = {
+	content : {
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		transform: "translate(-50%, -50%)",
+		width: "50%",
+		height: "70%",
+		padding: "2rem",
+		border: "1px solid",
+		borderRadius: "15px",
+		backgroundColor: "#F7F7F7"
+	}
+}
 
 class Profile extends Component {
 
@@ -14,6 +29,8 @@ class Profile extends Component {
 		isLoading: true,
 		showModal: false
 	}
+
+	
 
 	componentDidMount() {
 		this.loadCurrentUser();
@@ -34,6 +51,10 @@ class Profile extends Component {
 		});
 	}
 
+	afterModalOpen = () => {
+		this.subtitle.style.color = "#f00";
+	}
+
 	render() {
 
 		// if (!this.state.loggedUser) {
@@ -49,10 +70,31 @@ class Profile extends Component {
 			<div>
 				<Navbarland />
 
+
 				<Modal
 				isOpen={this.state.showModal}
+				onAfterOpen={this.afterModalOpen}
 				onRequestClose={this.toggleModal}
+				contentLabel="Test Modal"
+				style={customModalStyle}
+				shouldCloseOnOverlayClick={false}
 				>
+					<h2 ref={subtitle => this.subtitle = subtitle}> CARDI!</h2>
+					<button onClick={this.toggleModal}>x</button>
+					<form>
+						<div className="form-group">
+							<label htmlFor="dish-name">Name</label>
+						    <input type="text" className="form-control" id="dish-name" placeholder=""/>
+						</div>
+						  	<div className="form-group">
+						    	<label htmlFor="profile-desc">Email</label>
+						    	<input type="email" className="form-control" id="profile-desc" placeholder=""/>
+						 	</div>
+						<div className="form-group">
+						    <label htmlFor="dish-qty">Qty</label>
+						    <input type="text" className="form-control" id="dish-qty" placeholder="1234 Main St"/>
+						</div>
+					</form>
 
 				</Modal>
 
