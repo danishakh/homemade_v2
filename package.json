@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "Mern Demo",
   "main": "server.js",
-  "proxy": "http://localhost:3001/",
+  "proxy": {
+    "/auth": {
+      "target": "http://localhost:3001"
+    },
+    "/api": {
+      "target": "http://localhost:3001"
+    }
+  },
   "scripts": {
     "server": "node server.js",
     "client": "node scripts/start-client.js",

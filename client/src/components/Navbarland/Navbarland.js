@@ -49,10 +49,10 @@ class Navbarland extends Component {
 			          			<i className="fas fa-user fa-2x"></i>
 			        		</a>
 			        		<div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-			          			<a className="dropdown-item" href="#">Action</a>
-			          			<a className="dropdown-item" href="#">Another action</a>
+			          			<a className="dropdown-item" href="/profile">My Profile</a>
+			          			<a className="dropdown-item" href="#">Order History</a>
 			          			<div className="dropdown-divider"></div>
-			          			<a className="dropdown-item" href="#">Something else here</a>
+			          			<a className="dropdown-item" href="/auth/logout">Logout</a>
 			        		</div>
 			      		</li>
 			      	</ul>  

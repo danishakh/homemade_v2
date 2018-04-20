@@ -62,8 +62,7 @@ var UserSchema = new Schema({
       ref: "Dish"
     }
   ],
-  shoppingCart:[
-    {
+  shoppingCart: {
       // Store ObjectIds in the array
       type: Schema.Types.ObjectId,
       // The ObjectIds will refer to the ids in the Dish model
@@ -71,7 +70,6 @@ var UserSchema = new Schema({
       quantity: Number,
       price: Number
     }
-  ]
 });
 
 

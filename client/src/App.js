@@ -17,6 +17,7 @@ class App extends Component {
 
   componentDidMount() {
     this.loadCurrentUser();
+    console.log('loaded');
   }
 
   loadCurrentUser = () => {

@@ -31,40 +31,44 @@ module.exports = function(passport) {
 			proxy: true
 		}, (accessToken, refreshToken, profile, done) => {
 
-			// Passport callback function
-			// this piece of code runs when Google sends back the 'user-code' to our app after the user allows access	
-			
-			//console.log(profile.emails[0].value);
-			//console.log(accessToken);
-			console.log("passport callback function fired");
+			process.nextTick(function(){
 
-			// Check if user with this googleID exists
-			db.User.findOne({googleID: profile.id}).populate("dishes").then(currentUser => {
-				if(currentUser) {
-					console.log('user is: ');
-					console.log(currentUser);
 
-					done(null, currentUser);	//send this user to the serializeUser method
-				}
+				
+				// Passport callback function
+				// this piece of code runs when Google sends back the 'user-code' to our app after the user allows access	
+				
+				//console.log(profile.emails[0].value);
+				//console.log(accessToken);
+				console.log("passport callback function fired");
 
-				// Create a new user
-				else {
-					db.User.create({
-						name: profile.displayName,
-						email: profile.emails[0].value,
-						password: "test123",
-						googleID: profile.id
-					})
-					.then(newUser => {
-						console.log('new user created ' + newUser);	//send the new user to serializeUser method
-						done(null, newUser); 
-					})
-					.catch(err => {
-						console.log(err);
-					});
-				}
-			}) 
-			
+				// Check if user with this googleID exists
+				db.User.findOne({googleID: profile.id}).populate("dishes").then(currentUser => {
+					if(currentUser) {
+						console.log('user is: ');
+						console.log(currentUser);
+
+						done(null, currentUser);	//send this user to the serializeUser method
+					}
+
+					// Create a new user
+					else {
+						db.User.create({
+							name: profile.displayName,
+							email: profile.emails[0].value,
+							password: "test123",
+							googleID: profile.id
+						})
+						.then(newUser => {
+							console.log('new user created ' + newUser);	//send the new user to serializeUser method
+							done(null, newUser); 
+						})
+						.catch(err => {
+							console.log(err);
+						});
+					}
+				}) 
+			})
 		})
 	)
 }

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import Navbarland from "../../components/Navbarland";
 import DishCard from "../../components/DishCard";
@@ -40,9 +39,7 @@ class Main extends Component {
 	    });
 	}
 
-    // TODO: BUG - when function triggers first time, it does not add to state
     updateShoppingCart = (id) => {
-        
         //console.log(id);
         let objToAdd = {}
         API.getDish(id)
@@ -60,7 +57,8 @@ class Main extends Component {
                         shoppingCart: [...this.state.shoppingCart, objToAdd]
                     })
                 }
-                //console.log(this.state);
+
+                console.log(this.state);
 
             })
             .catch(err => console.log(err));
@@ -69,7 +67,7 @@ class Main extends Component {
     render() {
         return (
             <div>
-                {this.state.shoppingCart.length>0  ? (
+                {this.state.shoppingCart.length > 0 ? (
                     <Navbarland  shoppingCartLength={this.state.shoppingCart.length}/>      
                 ) : (
                     <Navbarland />
@@ -96,8 +94,6 @@ class Main extends Component {
                         ))}
                     
                 </div>   
-
-                    
                 
             </div>
 
