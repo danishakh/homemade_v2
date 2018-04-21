@@ -38,7 +38,7 @@ module.exports = function(passport) {
 				// Passport callback function
 				// this piece of code runs when Google sends back the 'user-code' to our app after the user allows access	
 				
-				//console.log(profile.emails[0].value);
+				
 				//console.log(accessToken);
 				console.log("passport callback function fired");
 
@@ -46,26 +46,45 @@ module.exports = function(passport) {
 				db.User.findOne({googleID: profile.id}).populate("dishes").then(currentUser => {
 					if(currentUser) {
 						console.log('user is: ');
-						console.log(currentUser);
+						//console.log(currentUser);
+						//console.log(profile);
 
 						done(null, currentUser);	//send this user to the serializeUser method
 					}
 
 					// Create a new user
 					else {
-						db.User.create({
-							name: profile.displayName,
-							email: profile.emails[0].value,
-							password: "test123",
-							googleID: profile.id
-						})
-						.then(newUser => {
-							console.log('new user created ' + newUser);	//send the new user to serializeUser method
-							done(null, newUser); 
-						})
-						.catch(err => {
-							console.log(err);
-						});
+
+						if (profile.photos[0].value) {
+							db.User.create({
+								name: profile.displayName,
+								email: profile.emails[0].value,
+								googleID: profile.id,
+								imgURL: profile.photos[0].value
+							})
+							.then(newUser => {
+								console.log('new user created ' + newUser);	//send the new user to serializeUser method
+								done(null, newUser); 
+							})
+							.catch(err => {
+								console.log(err);
+							});
+						}
+						else {
+							db.User.create({
+								name: profile.displayName,
+								email: profile.emails[0].value,
+								googleID: profile.id
+							})
+							.then(newUser => {
+								console.log('new user created ' + newUser);	//send the new user to serializeUser method
+								done(null, newUser); 
+							})
+							.catch(err => {
+								console.log(err);
+							});
+						}
+						
 					}
 				}) 
 			})

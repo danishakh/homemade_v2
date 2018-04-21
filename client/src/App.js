@@ -18,6 +18,7 @@ class App extends Component {
   componentDidMount() {
     this.loadCurrentUser();
     console.log('loaded');
+    console.log(this.state.loggedUser.name + " just logged in!");
   }
 
   loadCurrentUser = () => {

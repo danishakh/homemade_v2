@@ -27,6 +27,8 @@ class Profile extends Component {
 	state = {
 		loggedUser: null,
 		isLoading: true,
+		addressStr: "",
+		dishQty: null,
 		showModal: false
 	}
 
@@ -39,8 +41,14 @@ class Profile extends Component {
 	loadCurrentUser = () => {
 		API.getCurrentUser()
 			.then(user => {
-				this.setState({loggedUser: user.data, isLoading: false})
+				let address = user.data.address.street + ", " + user.data.address.city
+					+ user.data.address.state + " " + user.data.address.zip + " " 
+					+ user.data.address.country;
+				let num_dishes = user.data.dishes.length;
 
+				console.log(user.data);
+
+				this.setState({loggedUser: user.data, addressStr: address, dishQty: num_dishes, isLoading: false})
 			})
 			.catch(err => console.log(err));
 	}
@@ -61,8 +69,8 @@ class Profile extends Component {
 		// 	return null;
 		// }
 		if (this.state.isLoading) {
-			console.log('loading...');
-			//return "loading page";
+			//console.log('loading...');
+			return "loading page";
 		}
 
 		return (
@@ -103,7 +111,15 @@ class Profile extends Component {
 
 				<div className="row some-space">
 				</div>
-				<ProfileCard />
+				
+				<ProfileCard 
+				name={this.state.loggedUser.name}
+				hp={this.state.loggedUser.points}
+				email={this.state.loggedUser.email}
+				address={this.state.addressStr}
+				dishesUploaded={this.state.dishQty}
+				img={this.state.loggedUser.imgURL}
+				/>
 
 				<div className="container ">
 					<div className="row row-x">

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-//const bcrypt = require('bcrypt');
 
 // Save a reference to the Schema constructor
 var Schema = mongoose.Schema;
@@ -17,27 +16,36 @@ var UserSchema = new Schema({
     match: [/.+@.+\..+/, "Please enter a valid e-mail address"],
     required: [true, "Email is required!"],
     unique: true
-   },
-  password: {
+  },
+  points: {
+    type: Number,
+    default: 5
+  },
+  imgURL: {
     type: String,
-    trim: true,
-    required: [true, "Password is required"],
-    validate: [
-      // Function takes in the new `longstring` value to be saved as an argument
-      function(input) {
-        // If this returns true, proceed. If not, return the error message below
-        return input.length > 5;
-      },
-      // Error Message
-      "password should be longer than 5 characters"
-    ]
+    default: ""
   },
   address: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String
+    street: {
+      type: String,
+      default: ""
+    },
+    city: {
+      type: String,
+      default: ""
+    },
+    state: {
+      type: String,
+      default: ""
+    },
+    zip: {
+      type: String,
+      default: ""
+    },
+    country: {
+      type: String,
+      default: ""
+    }
   },
   googleID: {
     type: String,

@@ -6,7 +6,6 @@ module.exports = {
     db.User
       .find({})
       .populate("dishes")
-      .populate("orders")
       .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -15,7 +14,6 @@ module.exports = {
     db.User
       .findById(req.params.id)
       .populate("dishes")
-      .populate("orders")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
