@@ -12,10 +12,17 @@ import API from "./utils/API";
 
 class App extends Component {
 
-  state = {
-    loggedUser: {},
-    shoppingCart: []
+  constructor() {
+    super();
+
+    this.state = {
+      loggedUser: {},
+      shoppingCart: []
+    }
+
+    this.handleCart = this.handleCart.bind(this);
   }
+  
 
   componentDidMount() {
     this.loadCurrentUser();
@@ -32,6 +39,8 @@ class App extends Component {
   }
 
   handleCart = (cart) => {
+    console.log('here');
+    console.log(cart);
     this.setState({
       shoppingCart: cart
     })
@@ -48,8 +57,8 @@ class App extends Component {
           <div>
             <Route exact path="/" component={Landing} />
             <Route path="/profile/" component={Profile} />
-            <Route exact path="/main" component={Main} />
-            <Route exact path="/checkout" component={Checkout} callBack={this.handleCart}/>
+            <Route exact path="/main" component={Main} callBack={this.handleCart}/>
+            <Route exact path="/checkout" component={Checkout} />
           </div>
         </Router>
     );

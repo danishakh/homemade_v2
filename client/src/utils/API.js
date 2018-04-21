@@ -15,10 +15,10 @@ export default {
   },
   // Adds a dish to the database
   addDish: function(dishData) {
-    return axios.post("/api/dishes", dishData);
+    return axios.post("/api/dishes/", dishData);
   },
   getDishByUser: function(id) {
-    return axios.get("/api/dishes/" + id);
+    return axios.get("/api/dishes/user/" + id);
   },
 
   // =================== USERS =====================

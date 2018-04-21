@@ -29,7 +29,7 @@ const customModalStyle = {
 class Profile extends Component {
 	state = {
 		loggedUser: null,
-		loggedUserDishes: null,
+		loggedUserDishes: [],
 		isLoading: true,
 		addressStr: "",
 		showModal: false,
@@ -48,6 +48,7 @@ class Profile extends Component {
 		dishSpice: "",
 		dishPrice: 0,
 		dishQty: 0,
+		numUserDishes: 0,
 		cloudImg: ""
 	}
 	
@@ -83,6 +84,8 @@ class Profile extends Component {
 						zip: user.data.address.zip,
 						country: user.data.address.country
 					})
+					//this.loadUserDishes(this.state.loggedUser._id);
+
 				}
 				else {
 					this.setState({
@@ -97,21 +100,25 @@ class Profile extends Component {
 						zip: user.data.address.zip,
 						country: user.data.address.country
 					})
-				}
-				
+					//this.loadUserDishes(this.state.loggedUser._id);
 
+				}				
 				//console.log(user.data);
 
 			})
 			.catch(err => console.log(err));
 	}
 
-	// loadUserDishes = () => {
-	// 	API.getDishByUser()
-	// 	.then(userDishes => {
-	// 		console.log(userDishes);
-	// 	})
-	// }
+	loadUserDishes = (id) => {
+		API.getDishByUser(id)
+		.then(userDishes => {
+			this.setState({
+				loggedUserDishes: userDishes.data,
+				numUserDishes: userDishes.data.length
+			})
+			window.location.pathname="/profile/"+this.state.loggedUser._id;
+		})
+	}
 
 	toggleModal = () => {
 		this.setState({
@@ -121,8 +128,8 @@ class Profile extends Component {
 
 	addDish = (dishObj) => {
 		API.addDish(dishObj)
-		.then(res => console.log("dish added"))
-		.catch(err => console.log(err))
+		.then(res => this.loadUserDishes(this.state.loggedUser._id))
+		.catch(err => console.log(err.response))
 	};
 
 	handleInputChange = event => {
@@ -153,6 +160,7 @@ class Profile extends Component {
 	      			profileUpdated: true
 	      		})
 	      		this.loadCurrentUser();
+	      		this.loadUserDishes(this.state.loggedUser._id)
 	      		window.location.pathname="/profile/"+this.state.loggedUser._id;
 	      	})
 	      	.catch(err => console.log(err));
@@ -162,19 +170,19 @@ class Profile extends Component {
   	handleDishSubmit = event => {
   		event.preventDefault();
   		
-  		if (this.state.dishName && this.state.dishDesc && this.state.dishImg && 
+  		if (this.state.dishName && this.state.dishDesc  && this.state.dishImg && 
   			this.state.dishPrice && this.state.dishQty && this.state.street && 
   			this.state.city) {
   			
   			this.addDish(
   			{
   				name: this.state.dishName,
-  				description: this.state.description,
-				imgURL: this.state.dishImg,
+  				description: this.state.dishDesc,
 				category: this.state.dishCat,
 				spiceLevel: this.state.dishSpice,
 				quantity: this.state.dishQty,
 				price: this.state.dishPrice,
+				imgURL: this.state.dishImg,
 				creator: this.state.loggedUser._id
   			})
   		}
@@ -390,13 +398,13 @@ class Profile extends Component {
 									</h3> 
 									<br/>
 										<ul className="list-group list-group-flush pre-scrollable">
-										{this.state.loggedUser.dishes.map(dish =>
-											<li className="list-group-item">
-												<h4>{dish.name} </h4>
-												<p> {dish.description}</p>
-												<p> {dish.price} </p>
-											</li>
-											)}
+											{this.state.loggedUserDishes.map(dish => (
+				                                <li key={dish._id} className="list-group-item">
+				                                	<img src={dish.imgURL} className="rounded float-left dish-img" alt={dish.name} />
+				                                	<h4 className="list-group-name"> {dish.name} </h4>
+				                                	<small className="list-group-desc"> {dish.description} </small>
+				                                </li>
+				                            ))}
 										</ul>
 								</div>
 							</div>

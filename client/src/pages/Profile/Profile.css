@@ -29,3 +29,12 @@
     right: 16px;
     font-size: 18px;
 }
+
+.dish-img {
+	width: 30%;
+	height: auto;
+}
+
+.list-group-name: {
+	float: right;
+}

@@ -4,7 +4,7 @@
 
 .navbar-brand {
 	left: 45%;
-	position: fixed;
+	position: absolute;
 	font-size: 45px;
 	font-family: 'Allura', cursive;
 }

@@ -22,14 +22,19 @@ const customModalStyle = {
 
 class Main extends Component {
 
-	state = {
-        dishes: [],
-        loggedUser: {},
-        shoppingCart: [],
-        isLoading: true,
-        showModal: false,
+    constructor(props) {
+        super(props);
 
-	}
+        this.state = {
+            dishes: [],
+            loggedUser: {},
+            shoppingCart: [],
+            isLoading: true,
+            showModal: false
+        }
+
+    }
+	
 
     componentDidMount() {
         this.loadDishes();
@@ -80,7 +85,7 @@ class Main extends Component {
                 }
 
                 console.log(this.state);
-                this.props.callBack(this.state.shoppingCart);
+                //this.props.callBack(this.state.shoppingCart);
 
             })
             .catch(err => console.log(err));
@@ -134,39 +139,7 @@ class Main extends Component {
 
                         <div className="row">
                             <div className="col-lg-12 col-md-12 col-sm-12">
-                                <form>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-name">Name</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishName} type="text" className="form-control" name="dishName" placeholder=""/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="profile-desc">Description</label>
-                                        <textarea onChange={this.handleInputChange} value={this.state.dishDesc} type="text" className="form-control" name="dishDesc" placeholder=""/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-qty">Category</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishCat} type="text" className="form-control" name="dishCat"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-qty">Spice Level</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishSpice} type="text" className="form-control" name="dishSpice"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-qty">Quantity</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishQty} type="number" className="form-control" name="dishQty"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-qty">Price</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishPrice} type="number" className="form-control" name="dishPrice"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="dish-qty">Image URL</label>
-                                        <input onChange={this.handleInputChange} value={this.state.dishImg} type="text" className="form-control" name="dishImg"/>
-                                    </div>
-
-                                    <button onClick={this.handleDishSubmit} type="submit" className="btn btn-outline-success btn-block">Add</button>
-                                    <button onClick={this.toggleModal} type="button" className="btn btn-outline-danger btn-block">Cancel</button>
-                                </form>
+                                
                             </div>
 
                         </div>
