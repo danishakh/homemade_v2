@@ -18,7 +18,14 @@
 	float: right;
 }
 
-.fluid {
-	overflow: auto;
+.row-form {
+	position: relative;
 	width: 100%;
+}
+
+.cancel {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
 }

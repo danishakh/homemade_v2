@@ -3,10 +3,20 @@
 }
 
 .navbar-brand {
-	position: absolute;
-	left: 50%;
+	left: 45%;
+	position: fixed;
+	font-size: 45px;
+	font-family: 'Allura', cursive;
 }
 
+.navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+
 .nav-link {
-	font-family: "Tahoma";
+	
 }

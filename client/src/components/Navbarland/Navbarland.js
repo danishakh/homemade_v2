@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import API from "../../utils/API";
 import "./Navbarland.css";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/lib/Badge";
 import Navbar from "react-bootstrap/lib/Navbar";
 import NavbarHeader from "react-bootstrap/lib/NavbarHeader";
@@ -29,7 +29,8 @@ class Navbarland extends Component {
 		API.getCurrentUser()
 			.then(user => {
 				this.setState({user: user.data, isLoggedIn:true});
-				//console.log(this.state.isLoggedIn);
+				//console.log('here');
+				//console.log(this.state.user);
 
 			})
 			.catch(err => console.log(err));
@@ -42,10 +43,7 @@ class Navbarland extends Component {
 		return (
 		  	<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			  	
-			  	<form className="form-inline my-2 my-lg-0">
-			      <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-			      <button className="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-			   	</form>
+			  	
 			   	<a className="navbar-brand" href="/main">HomeMade</a>
 			  	<div className="collapse navbar-collapse" id="navbarSupportedContent">
 			    	<ul className="navbar-nav ml-auto">
@@ -57,7 +55,7 @@ class Navbarland extends Component {
 			          			<i className="fas fa-user fa-2x"></i>
 			        		</a>
 			        		<div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-			          			<a className="dropdown-item" href="/profile">My Profile</a>
+			          			<Link to={`/profile/${this.state.user._id}`} className="dropdown-item">My Profile</Link>
 			          			<a className="dropdown-item" href="#">Order History</a>
 			          			<div className="dropdown-divider"></div>
 			          			<a className="dropdown-item" href="/auth/logout">Logout</a>
@@ -67,15 +65,7 @@ class Navbarland extends Component {
 			  	</div>
 			</nav>
 
-			// <Navbar collapseOnSelect>
-			// 	<Navbar.Form pullLeft>
-			// 		<FormGroup>
-			// 			<FormControl type="text" placeholder="Search" />
-			// 		</FormGroup>{' '}
-			// 		<Button bsStyle="success" type="submit">Submit</Button>
-			// 	</Navbar.Form>
-			// </Navbar>	
-
+		
 		)
 
 	}

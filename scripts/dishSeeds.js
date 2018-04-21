@@ -18,7 +18,8 @@ const dishSeeds = [
     category: "mediterranean",
     quantity: 10,
     price: 10,
-    imageURL: ['https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_4.jpg']
+    imgURL: 'https://www.recipetineats.com/wp-content/uploads/2014/12/Chicken-Shawarma_4.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "shrimp linguini",
@@ -26,7 +27,8 @@ const dishSeeds = [
     category: "seafood",
     quantity: 5,
     price: 12,
-    imageURL: ['https://www.landolakes.com/RecipeManagementSystem/media/Recipe-Media-Files/Recipes/Retail/x17/20698-white-wine-garlic-shrimp-linguine-600x600.jpg?ext=.jpg']
+    imgURL: 'https://www.landolakes.com/RecipeManagementSystem/media/Recipe-Media-Files/Recipes/Retail/x17/20698-white-wine-garlic-shrimp-linguine-600x600.jpg?ext=.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "cheesecake",
@@ -34,7 +36,8 @@ const dishSeeds = [
     category: "dessert",
     quantity: 5,
     price: 5,
-    imageURL: ['http://www.ndtv.com/cooks/images/strawberry.cheesecake.jpg']
+    imgURL: 'http://www.ndtv.com/cooks/images/strawberry.cheesecake.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "mac n cheese",
@@ -42,7 +45,8 @@ const dishSeeds = [
     category: "american",
     quantity: 10,
     price: 5,
-    imageURL: ['https://www.recipetineats.com/wp-content/uploads/2017/03/Baked-Mac-N-Cheese_2.jpg']
+    imgURL: 'https://www.recipetineats.com/wp-content/uploads/2017/03/Baked-Mac-N-Cheese_2.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "kung pao chicken",
@@ -50,7 +54,8 @@ const dishSeeds = [
     category: "chinese",
     quantity: 10,
     price: 5,
-    imageURL: ['https://www.seriouseats.com/recipes/images/2014/05/20140513-takeout-kung-pao-chicken-peanuts-peppers-recipe-07.jpg']
+    imgURL: 'https://www.seriouseats.com/recipes/images/2014/05/20140513-takeout-kung-pao-chicken-peanuts-peppers-recipe-07.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "butter chicken",
@@ -58,7 +63,8 @@ const dishSeeds = [
     category: "indian",
     quantity: 7,
     price: 8,
-    imageURL: ['https://i.ytimg.com/vi/a03U45jFxOI/maxresdefault.jpg']
+    imgURL: 'https://i.ytimg.com/vi/a03U45jFxOI/maxresdefault.jpg',
+    creator: '5adac5674e6167c10c362b67'
   },
   {
     name: "beef kebabs",
@@ -66,7 +72,8 @@ const dishSeeds = [
     category: "pakistani",
     quantity: 10,
     price: 5,
-    imageURL: ['https://www.recipetineats.com/wp-content/uploads/2017/03/Baked-Mac-N-Cheese_2.jpg']
+    imgURL: 'https://www.recipetineats.com/wp-content/uploads/2017/03/Baked-Mac-N-Cheese_2.jpg',
+    creator: '5adac5674e6167c10c362b67'
   }
 ];
 

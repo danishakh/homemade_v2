@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
+import keys from "../../utils/keys";
 import "./Profile.css";
 import Navbarland from "../../components/Navbarland";
 import ProfileCard from "../../components/ProfileCard";
-import ImageUploadZone from "../../components/ImageUploadZone";
+import Dropzone from "react-dropzone";
+//import ImageUploadZone from "../../components/ImageUploadZone";
 import Modal from "react-modal";
 import axios from "axios";
+import superagent from "superagent"
+import sha1 from "sha1";
 
 const customModalStyle = {
 	content : {
@@ -23,12 +27,11 @@ const customModalStyle = {
 }
 
 class Profile extends Component {
-
 	state = {
 		loggedUser: null,
+		loggedUserDishes: null,
 		isLoading: true,
 		addressStr: "",
-		dishQty: null,
 		showModal: false,
 		name: "",
 		email: "",
@@ -37,8 +40,17 @@ class Profile extends Component {
 		state: "",
 		zip: "",
 		country: "",
-		profileUpdated: false
+		profileUpdated: false,
+		dishName: "",
+		dishDesc: "",
+		dishImg: "",
+		dishCat: "",
+		dishSpice: "",
+		dishPrice: 0,
+		dishQty: 0,
+		cloudImg: ""
 	}
+	
 
 	
 
@@ -94,11 +106,24 @@ class Profile extends Component {
 			.catch(err => console.log(err));
 	}
 
+	// loadUserDishes = () => {
+	// 	API.getDishByUser()
+	// 	.then(userDishes => {
+	// 		console.log(userDishes);
+	// 	})
+	// }
+
 	toggleModal = () => {
 		this.setState({
 			showModal: !this.state.showModal
 		});
 	}
+
+	addDish = (dishObj) => {
+		API.addDish(dishObj)
+		.then(res => console.log("dish added"))
+		.catch(err => console.log(err))
+	};
 
 	handleInputChange = event => {
 		const { name, value } = event.target;
@@ -134,6 +159,86 @@ class Profile extends Component {
 	    }
   	};
 
+  	handleDishSubmit = event => {
+  		event.preventDefault();
+  		
+  		if (this.state.dishName && this.state.dishDesc && this.state.dishImg && 
+  			this.state.dishPrice && this.state.dishQty && this.state.street && 
+  			this.state.city) {
+  			
+  			this.addDish(
+  			{
+  				name: this.state.dishName,
+  				description: this.state.description,
+				imgURL: this.state.dishImg,
+				category: this.state.dishCat,
+				spiceLevel: this.state.dishSpice,
+				quantity: this.state.dishQty,
+				price: this.state.dishPrice,
+				creator: this.state.loggedUser._id
+  			})
+  		}
+  		else {
+  			console.log("need all the details bro!");
+  		}
+  	}
+
+  	uploadFile(files) {
+		console.log('upload fired!');
+
+		const image = files[0];
+		const timestamp = Date.now()/1000;
+		const paramStr = "timestamp="+timestamp+"&upload_preset="+keys.cloudinary.uploadPreset+keys.cloudinary.apiSecret;
+		//encrypt our parameters
+		const signature = sha1(paramStr);
+
+		const params = {
+			"api_key": keys.cloudinary.apiKey,
+			"timestamp": timestamp,
+			"upload_preset": keys.cloudinary.uploadPreset,
+			"signature": signature
+		}
+
+		let uploadRequest = superagent.post(keys.cloudinary.uploadURL);
+		uploadRequest.attach("file", image);
+
+		Object.keys(params).forEach(key => {
+			uploadRequest.field(key, params[key])
+		});
+
+		uploadRequest.end((err, resp) => {
+			if (err) {
+				console.log(err);
+				return
+			}
+
+			
+			const uploaded = resp.body.url;
+
+			// let updatedImages = Object.assign([], this.state.images);
+			// updatedImages.push(uploaded);
+			
+			console.log(resp.body.url);
+			
+			this.setState({
+				cloudImg: uploaded
+			})
+
+			console.log("Upload Complete: ", resp.body);
+
+
+			//props.callbackFromParent(res.body.secure_url);
+		});
+
+
+	}
+  	// handleDropZone = dropzoneObj => {
+  	// 	//console.log(dropzoneObj.secure_url);
+  	// 	this.setState({
+  	// 		dishImg: dropzoneObj
+  	// 	});
+  	// }
+
 	render() {
 
 		// if (!this.state.loggedUser) {
@@ -152,33 +257,62 @@ class Profile extends Component {
 
 				<Modal
 				isOpen={this.state.showModal}
-				onAfterOpen={this.afterModalOpen}
 				onRequestClose={this.toggleModal}
 				contentLabel="Test Modal"
 				style={customModalStyle}
-				shouldCloseOnOverlayClick={true}
+				shouldCloseOnOverlayClick={false}
 				>
 					<div className="container">
+						
+						<button onClick={this.toggleModal} type="button" className="btn cancel btn-outline-danger"><i className="fas fa-times"></i></button>
+
+
 
 						<div className="row">
-							<ImageUploadZone />
+							<div className="image-dropzone">
+								<Dropzone onDrop={this.uploadFile} />
+							</div>						
 						</div>
-						<div className="row fluid">
-							
-							<form>
-								<div className="form-group">
-									<label htmlFor="dish-name">Name</label>
-								    <input type="text" className="form-control" id="dish-name" placeholder=""/>
-								</div>
-							  	<div className="form-group">
-							    	<label htmlFor="profile-desc">Email</label>
-							    	<input type="email" className="form-control" id="profile-desc" placeholder=""/>
-							 	</div>
-								<div className="form-group">
-								    <label htmlFor="dish-qty">Qty</label>
-								    <input type="text" className="form-control" id="dish-qty" placeholder="1234 Main St"/>
-								</div>
-							</form>
+
+
+
+						<div className="row">
+							<div className="col-lg-12 col-md-12 col-sm-12">
+								<form>
+									<div className="form-group">
+										<label htmlFor="dish-name">Name</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishName} type="text" className="form-control" name="dishName" placeholder=""/>
+									</div>
+								  	<div className="form-group">
+								    	<label htmlFor="profile-desc">Description</label>
+								    	<textarea onChange={this.handleInputChange} value={this.state.dishDesc} type="text" className="form-control" name="dishDesc" placeholder=""/>
+								 	</div>
+									<div className="form-group">
+									    <label htmlFor="dish-qty">Category</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishCat} type="text" className="form-control" name="dishCat"/>
+									</div>
+									<div className="form-group">
+									    <label htmlFor="dish-qty">Spice Level</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishSpice} type="text" className="form-control" name="dishSpice"/>
+									</div>
+									<div className="form-group">
+									    <label htmlFor="dish-qty">Quantity</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishQty} type="number" className="form-control" name="dishQty"/>
+									</div>
+									<div className="form-group">
+									    <label htmlFor="dish-qty">Price</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishPrice} type="number" className="form-control" name="dishPrice"/>
+									</div>
+									<div className="form-group">
+									    <label htmlFor="dish-qty">Image URL</label>
+									    <input onChange={this.handleInputChange} value={this.state.dishImg} type="text" className="form-control" name="dishImg"/>
+									</div>
+
+									<button onClick={this.handleDishSubmit} type="submit" className="btn btn-outline-success btn-block">Add</button>
+									<button onClick={this.toggleModal} type="button" className="btn btn-outline-danger btn-block">Cancel</button>
+								</form>
+							</div>
+
 						</div>
 
 					</div>
@@ -256,51 +390,13 @@ class Profile extends Component {
 									</h3> 
 									<br/>
 										<ul className="list-group list-group-flush pre-scrollable">
+										{this.state.loggedUser.dishes.map(dish =>
 											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
+												<h4>{dish.name} </h4>
+												<p> {dish.description}</p>
+												<p> {dish.price} </p>
 											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price:</p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
-											<li className="list-group-item">
-												<h5> Chicken Tikka </h5>
-												<p> some long ass description about the dish here maybe? </p>
-												<p> price: </p>
-											</li>
+											)}
 										</ul>
 								</div>
 							</div>

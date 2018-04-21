@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import Main from "./pages/Main";
+import Checkout from "./pages/Checkout";
 import API from "./utils/API";
 
 
@@ -12,7 +13,8 @@ import API from "./utils/API";
 class App extends Component {
 
   state = {
-    loggedUser: {}
+    loggedUser: {},
+    shoppingCart: []
   }
 
   componentDidMount() {
@@ -29,6 +31,12 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
+  handleCart = (cart) => {
+    this.setState({
+      shoppingCart: cart
+    })
+  }
+
   render() {
     
     // if (!this.state.loggedUser) {
@@ -41,6 +49,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route path="/profile/" component={Profile} />
             <Route exact path="/main" component={Main} />
+            <Route exact path="/checkout" component={Checkout} callBack={this.handleCart}/>
           </div>
         </Router>
     );

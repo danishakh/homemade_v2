@@ -17,6 +17,9 @@ export default {
   addDish: function(dishData) {
     return axios.post("/api/dishes", dishData);
   },
+  getDishByUser: function(id) {
+    return axios.get("/api/dishes/" + id);
+  },
 
   // =================== USERS =====================
   // Gets all users

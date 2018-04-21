@@ -8,11 +8,14 @@ const keys =  require("../../utils/keys.js");
 
 class ImageUploadZone extends Component {
 
-	state = {
-		images: [],
-		dropzoneStyle: {
-			width:"500px",
-			height:"50px"
+	constructor(){
+		super();
+		this.state = {
+			images: [],
+			dropzoneStyle: {
+				width:"500px",
+				height:"50px"
+			}
 		}
 	}
 
@@ -45,27 +48,36 @@ class ImageUploadZone extends Component {
 				return
 			}
 
-			console.log("Upload Complete: ", JSON.stringify(res.body));
-			let updatedImages = Object.assign([], this.state.images);
-			updatedImages.push(res.body.secure_url);
+			
+			const uploaded = res.body;
 
+			let updatedImages = Object.assign([], this.state.images);
+			updatedImages.push(uploaded);
+			
+			//console.log(res.body.secure_url);
+			
 			this.setState({
 				images: updatedImages
-			});
+			})
 
+			console.log("Upload Complete: ", JSON.stringify(res.body));
+
+
+			//props.callbackFromParent(res.body.secure_url);
 		});
 
 
 	}
 
-
+	// handleDataToParent = () => {
+	// 	let data = this.state.imageURL;
+	// 	this.props.callbackFromParent(data);
+	// }
 
 	render() {
 
 		return(
-			<div className="image-dropzone">
-				<Dropzone onDrop={this.uploadFile} />
-			</div>
+			
 		)
 	}
 }

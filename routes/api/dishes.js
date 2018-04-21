@@ -12,6 +12,7 @@ router.route("/")
 router
   .route("/:id")
   .get(dishesController.findById)
+  .get(dishesController.findByUserId)
   .put(dishesController.update)
   .delete(dishesController.remove);
 
