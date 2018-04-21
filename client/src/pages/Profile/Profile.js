@@ -3,7 +3,7 @@ import API from "../../utils/API";
 import "./Profile.css";
 import Navbarland from "../../components/Navbarland";
 import ProfileCard from "../../components/ProfileCard";
-//import DishModal from "../../components/DishModal";
+import ImageUploadZone from "../../components/ImageUploadZone";
 import Modal from "react-modal";
 
 const customModalStyle = {
@@ -79,6 +79,9 @@ class Profile extends Component {
 				style={customModalStyle}
 				shouldCloseOnOverlayClick={false}
 				>
+
+					<ImageUploadZone />
+
 					<h2 ref={subtitle => this.subtitle = subtitle}> CARDI!</h2>
 					<button onClick={this.toggleModal}>x</button>
 					<form>
