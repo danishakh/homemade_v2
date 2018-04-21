@@ -17,3 +17,8 @@
 .btn-add-dish {
 	float: right;
 }
+
+.fluid {
+	overflow: auto;
+	width: 100%;
+}

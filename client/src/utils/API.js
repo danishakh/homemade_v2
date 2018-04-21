@@ -32,6 +32,10 @@ export default {
   deleteUser: function(id) {
     return axios.delete("/api/users/" + id);
   },
+
+  updateUser: function(id, userData) {
+    return axios.put("/api/users/" + id, userData);
+  },
   // Adds a user to the database
   // addUser: function(userData) {
   //   return axios.post("/api/users", userData);

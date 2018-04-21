@@ -18,23 +18,28 @@ class App extends Component {
   componentDidMount() {
     this.loadCurrentUser();
     console.log('loaded');
-    console.log(this.state.loggedUser.name + " just logged in!");
   }
 
   loadCurrentUser = () => {
     API.getCurrentUser()
       .then(user => {
         this.setState({loggedUser: user.data})
+        //console.log(user.data);
       })
       .catch(err => console.log(err));
   }
 
   render() {
+    
+    // if (!this.state.loggedUser) {
+    //   return "loading page";
+    // }
+
     return (
         <Router>
           <div>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/profile" component={Profile} />
+            <Route path="/profile/" component={Profile} />
             <Route exact path="/main" component={Main} />
           </div>
         </Router>

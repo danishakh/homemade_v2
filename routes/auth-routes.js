@@ -33,13 +33,14 @@ module.exports = (app) => {
 	app.get("/auth/google/redirect", passport.authenticate("google", { failureRedirect: '/' }),(req, res) => {
 		//res.send("google callback URI reached");
 		//res.send(req.user);
-
-		res.redirect("/profile");
+		//console.log(req.user);
+		res.redirect("/profile/"+req.user._id);
 	});
 
 	// Get current user logged in
 	app.get('/api/currentuser', function(req, res) {
         res.send(req.user);
+        console.log(req.user);
     });
 
 	// can be used as middleware

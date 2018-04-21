@@ -24,7 +24,7 @@ var DishSchema = new Schema({
       ref: "User",
       required: true
   },
-  imageURL: {
+  imgURL: {
   	type: String
   },
   category: {

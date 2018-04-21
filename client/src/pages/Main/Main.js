@@ -8,7 +8,8 @@ class Main extends Component {
 	state = {
         dishes: [],
         loggedUser: {},
-        shoppingCart: []
+        shoppingCart: [],
+        isLoading: true
 	}
 
     componentDidMount() {
@@ -19,7 +20,7 @@ class Main extends Component {
     loadDishes = () => {
         API.getDishes()
             .then(res =>
-                this.setState({ dishes: res.data })
+                this.setState({ dishes: res.data, isLoading: false })
             )
             .catch(err => console.log(err));
     };
@@ -65,6 +66,12 @@ class Main extends Component {
     }
 
     render() {
+        
+        if (this.state.isLoading) {
+            //console.log('loading...');
+            return "loading page";
+        }
+
         return (
             <div>
                 {this.state.shoppingCart.length > 0 ? (

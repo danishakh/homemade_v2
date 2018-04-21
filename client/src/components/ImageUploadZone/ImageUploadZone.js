@@ -1,6 +1,7 @@
 import superagent from "superagent";
 import React, { Component } from "react";
 import Dropzone from "react-dropzone";
+import "./ImageUploadZone.css";
 import sha1 from "sha1";
 const keys =  require("../../utils/keys.js");
 
@@ -8,7 +9,11 @@ const keys =  require("../../utils/keys.js");
 class ImageUploadZone extends Component {
 
 	state = {
-		images: []
+		images: [],
+		dropzoneStyle: {
+			width:"500px",
+			height:"50px"
+		}
 	}
 
 	uploadFile(file) {
@@ -58,11 +63,8 @@ class ImageUploadZone extends Component {
 	render() {
 
 		return(
-			<div>
-				Image Upload Component
-
+			<div className="image-dropzone">
 				<Dropzone onDrop={this.uploadFile} />
-
 			</div>
 		)
 	}

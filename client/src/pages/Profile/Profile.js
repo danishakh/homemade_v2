@@ -5,6 +5,7 @@ import Navbarland from "../../components/Navbarland";
 import ProfileCard from "../../components/ProfileCard";
 import ImageUploadZone from "../../components/ImageUploadZone";
 import Modal from "react-modal";
+import axios from "axios";
 
 const customModalStyle = {
 	content : {
@@ -17,8 +18,7 @@ const customModalStyle = {
 		height: "70%",
 		padding: "2rem",
 		border: "1px solid",
-		borderRadius: "15px",
-		backgroundColor: "#F7F7F7"
+		borderRadius: "15px"
 	}
 }
 
@@ -29,7 +29,15 @@ class Profile extends Component {
 		isLoading: true,
 		addressStr: "",
 		dishQty: null,
-		showModal: false
+		showModal: false,
+		name: "",
+		email: "",
+		street: "",
+		city: "",
+		state: "",
+		zip: "",
+		country: "",
+		profileUpdated: false
 	}
 
 	
@@ -41,14 +49,47 @@ class Profile extends Component {
 	loadCurrentUser = () => {
 		API.getCurrentUser()
 			.then(user => {
-				let address = user.data.address.street + ", " + user.data.address.city
-					+ user.data.address.state + " " + user.data.address.zip + " " 
-					+ user.data.address.country;
+
+				let address;
 				let num_dishes = user.data.dishes.length;
 
-				console.log(user.data);
+				if (user.data.address) {
+					address = user.data.address.street + ", " + user.data.address.city
+					+ " " + user.data.address.state + " " + user.data.address.zip + " " 
+					+ user.data.address.country;
 
-				this.setState({loggedUser: user.data, addressStr: address, dishQty: num_dishes, isLoading: false})
+					this.setState({
+						loggedUser: user.data, 
+						addressStr: address, 
+						dishQty: num_dishes, 
+						isLoading: false,
+						name: user.data.name,
+						email: user.data.email,
+						street: user.data.address.street,
+						city: user.data.address.city,
+						state: user.data.address.state,
+						zip: user.data.address.zip,
+						country: user.data.address.country
+					})
+				}
+				else {
+					this.setState({
+						loggedUser: user.data,  
+						dishQty: num_dishes, 
+						isLoading: false,
+						name: user.data.name,
+						email: user.data.email,
+						street: user.data.address.street,
+						city: user.data.address.city,
+						state: user.data.address.state,
+						zip: user.data.address.zip,
+						country: user.data.address.country
+					})
+				}
+				
+
+				//console.log(user.data);
+
 			})
 			.catch(err => console.log(err));
 	}
@@ -59,9 +100,39 @@ class Profile extends Component {
 		});
 	}
 
-	afterModalOpen = () => {
-		this.subtitle.style.color = "#f00";
-	}
+	handleInputChange = event => {
+		const { name, value } = event.target;
+		this.setState({
+		  [name]: value
+		});
+	};
+
+	handleFormSubmit = event => {
+	    event.preventDefault();
+	    if (this.state.name && this.state.email) {
+
+	      API.updateUser(this.state.loggedUser._id, 
+	      	{
+		      	name: this.state.name,
+		  		email: this.state.email,
+		  		address: {
+		  			street: this.state.street,
+					city: this.state.city,
+					state: this.state.state,
+					zip: this.state.zip,
+					country: this.state.country
+		  		}
+	  		})
+	      	.then(res => {
+	      		this.setState({
+	      			profileUpdated: true
+	      		})
+	      		this.loadCurrentUser();
+	      		window.location.pathname="/profile/"+this.state.loggedUser._id;
+	      	})
+	      	.catch(err => console.log(err));
+	    }
+  	};
 
 	render() {
 
@@ -85,27 +156,35 @@ class Profile extends Component {
 				onRequestClose={this.toggleModal}
 				contentLabel="Test Modal"
 				style={customModalStyle}
-				shouldCloseOnOverlayClick={false}
+				shouldCloseOnOverlayClick={true}
 				>
+					<div className="container">
 
-					<ImageUploadZone />
+						<div className="row">
+							<ImageUploadZone />
+						</div>
+						<div className="row fluid">
+							
+							<form>
+								<div className="form-group">
+									<label htmlFor="dish-name">Name</label>
+								    <input type="text" className="form-control" id="dish-name" placeholder=""/>
+								</div>
+							  	<div className="form-group">
+							    	<label htmlFor="profile-desc">Email</label>
+							    	<input type="email" className="form-control" id="profile-desc" placeholder=""/>
+							 	</div>
+								<div className="form-group">
+								    <label htmlFor="dish-qty">Qty</label>
+								    <input type="text" className="form-control" id="dish-qty" placeholder="1234 Main St"/>
+								</div>
+							</form>
+						</div>
 
-					<h2 ref={subtitle => this.subtitle = subtitle}> CARDI!</h2>
-					<button onClick={this.toggleModal}>x</button>
-					<form>
-						<div className="form-group">
-							<label htmlFor="dish-name">Name</label>
-						    <input type="text" className="form-control" id="dish-name" placeholder=""/>
-						</div>
-						  	<div className="form-group">
-						    	<label htmlFor="profile-desc">Email</label>
-						    	<input type="email" className="form-control" id="profile-desc" placeholder=""/>
-						 	</div>
-						<div className="form-group">
-						    <label htmlFor="dish-qty">Qty</label>
-						    <input type="text" className="form-control" id="dish-qty" placeholder="1234 Main St"/>
-						</div>
-					</form>
+					</div>
+					
+
+					
 
 				</Modal>
 
@@ -133,42 +212,37 @@ class Profile extends Component {
 									  
 									  <div className="form-group">
 									    <label htmlFor="profile-name">Name</label>
-									    <input type="text" className="form-control" id="profile-name" placeholder=""/>
+									    <input onChange={this.handleInputChange} value={this.state.name} type="text" className="form-control" name="name" placeholder=""/>
 									  </div>
 									  <div className="form-group">
 									    <label htmlFor="profile-email">Email</label>
-									    <input type="email" className="form-control" id="profile-email" placeholder=""/>
+									    <input onChange={this.handleInputChange} value={this.state.email} type="email" className="form-control" name="email" placeholder=""/>
 									  </div>
 									  <div className="form-group">
-									    <label htmlFor="inputAddress">Address</label>
-									    <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St"/>
+									    <label htmlFor="street">Street</label>
+									    <input onChange={this.handleInputChange} value={this.state.street} type="text" className="form-control" name="street" placeholder="1234 Main St"/>
 									  </div>
 									  <div className="form-row">
 									    <div className="form-group col-md-6">
-									      <label htmlFor="inputCity">City</label>
-									      <input type="text" className="form-control" id="inputCity"/>
+									      <label htmlFor="profile-city">City</label>
+									      <input onChange={this.handleInputChange} value={this.state.city} type="text" className="form-control" name="city"/>
 									    </div>
 									    <div className="form-group col-md-4">
-									      <label htmlFor="inputState">State</label>
-									      <select id="inputState" className="form-control">
-									        <option selected>Choose...</option>
-									        <option>...</option>
-									      </select>
+									      <label htmlFor="profile-state">State</label>
+									      <input onChange={this.handleInputChange} value={this.state.state} type="text" className="form-control" name="state"/>
 									    </div>
 									    <div className="form-group col-md-2">
-									      <label htmlFor="inputZip">Zip</label>
-									      <input type="text" className="form-control" id="inputZip"/>
+									      <label htmlFor="profile-zip">Zip</label>
+									      <input onChange={this.handleInputChange} value={this.state.zip} type="text" className="form-control" name="zip"/>
 									    </div>
 									  </div>
 									  <div className="form-group">
-									    <div className="form-check">
-									      <input className="form-check-input" type="checkbox" id="gridCheck"/>
-									      <label className="form-check-label" htmlFor="gridCheck">
-									        Check me out
-									      </label>
-									    </div>
+									    <label htmlFor="country">Country</label>
+									    <input onChange={this.handleInputChange} value={this.state.country} type="text" className="form-control" name="country"/>
 									  </div>
-									  <button type="submit" className="btn btn-outline-success btn-block">Save</button>
+									  
+									  
+									  <button onClick={this.handleFormSubmit} type="submit" className="btn btn-outline-success btn-block">Save</button>
 									</form>
 								</div>	
 							</div>	
